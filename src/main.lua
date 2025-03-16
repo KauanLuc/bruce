@@ -135,6 +135,8 @@ function help(...)
 	Initalize the Bruce Vault.
 	bruce add [--print, -p || --open-editor, -op] <credential || folder/credential> <gpg_id> -> 
 	Add a credential into Bruce Vault.
+	bruce help ->
+	Show this help message.
 	]]	
 	)
 end
