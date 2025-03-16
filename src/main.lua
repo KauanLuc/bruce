@@ -14,13 +14,13 @@ function init()
 end
 
 function encrypt(data, credential_path, gpg_id)
-		os.execute('echo "' .. data .. '" > ' .. credential_path)
-		os.execute(string.format(
-			'gpg --yes --output %s.gpg -r %s -e %s', 
-			credential_path, gpg_id, credential_path)
-		)
+	os.execute('echo "' .. data .. '" > ' .. credential_path)
+	os.execute(string.format(
+		'gpg --yes --output %s.gpg -r %s -e %s', 
+		credential_path, gpg_id, credential_path)
+	)
 		
-		os.execute('rm ' .. credential_path)
+	os.execute('rm ' .. credential_path)
 end
 
 function verifyFile(file)
