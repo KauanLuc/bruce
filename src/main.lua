@@ -129,7 +129,14 @@ function addf(...)
 end
 
 function help(...)
-	print('help*')
+	print(
+	[[
+	bruce init -> 
+	Initalize the Bruce Vault.
+	bruce add [--print, -p || --open-editor, -op] <credential || folder/credential> <gpg_id> -> 
+	Add a credential into Bruce Vault.
+	]]	
+	)
 end
 
 commands = {
