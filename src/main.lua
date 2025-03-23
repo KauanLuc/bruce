@@ -1,5 +1,3 @@
--- gpg --decrypt /tmp/.bruce-vault/credential.gpg | cat
-
 local BRUCE_VAULT_PATH = '/tmp/.bruce-vault/'
 local GPG_IDS_FILE = BRUCE_VAULT_PATH .. '.gpg-history'
 
@@ -38,19 +36,15 @@ end
 function add(...)
 	local args = ...
 	
-	if #args ~= 3 and #args ~= 4 then
+	if #args ~= 2 and #args ~= 3 then
 		--[[
 			args = {
-				[1] = add
+				[1] = credential
 				or
-				[1] = add,
-				[2] = credential
-				or
-				[1] = add,
-				[2] = credential,
-				[3] = gpg_id,
-				[4] = bla,
-				[5] = bla
+				[1] = credential,
+				[2] = gpg_id,
+				[3] = bla,
+				[4] = bla
 				et cetera
 			}
 		]]--
@@ -60,17 +54,16 @@ function add(...)
 			)
 	end
 	
-	if #args == 3 then
+	if #args == 2 then
 		--[[
 			args = {
-				[1] = add,
-				[2] = credential,
-				[3] = gpg_id
+				[1] = credential,
+				[2] = gpg_id
 			}
 		]]--
 		
-		local credential = args[2]
-		local gpg_id = args[3]
+		local credential = args[1]
+		local gpg_id = args[2]
 		local password = ''
 		local credential_path = BRUCE_VAULT_PATH .. credential
 		
@@ -85,19 +78,18 @@ function add(...)
 		return showCredentialStatus(credential_path)
 	end
 	
-	if #args == 4 then
+	if #args == 3 then
 		--[[
 			args = {
-				[1] = add,
-				[2] = --print, -p or --open-editor, -op,
-				[3] = credential,
-				[4] = gpg_id
+				[1] = --print, -p or --open-editor, -op,
+				[2] = credential,
+				[3] = gpg_id
 			}		
 		]]--
 
-		local option = args[2]
-		local credential = args[3]
-		local gpg_id = arg[4]
+		local option = args[1]
+		local credential = args[2]
+		local gpg_id = arg[3]
 		local credential_path = BRUCE_VAULT_PATH .. credential
 		
 		if option == '--print' or option == '-p' then
@@ -124,8 +116,14 @@ function add(...)
 	end
 end
 
-function addf(...)
-	print('addf')
+function show(...)
+	local credential = ...
+	local credential = credential[1]
+	os.execute(string.format('gpg --decrypt %s%s.gpg | cat', BRUCE_VAULT_PATH, credential))
+end
+
+function ls()
+	os.execute('tree -a -C '..BRUCE_VAULT_PATH)
 end
 
 function help(...)
@@ -137,6 +135,10 @@ function help(...)
 	Add a credential into Bruce Vault.
 	bruce help ->
 	Show this help message.
+	bruce show <credential> ->
+	Show the data of a specific credential
+	bruce ls ->
+	Show all credentials into bruce vault
 	]]	
 	)
 end
@@ -145,13 +147,16 @@ commands = {
 	['init'] = init,
 	['help'] = help,
 	['add'] = add,
-	['addf'] = addf
+	['show'] = show,
+	['ls'] = ls,
 }
 
 function run(...)
 	local command = commands[table.unpack(...)]
 	if command then
-		return command(...)
+		local args = ...
+		table.remove(args, 1)
+		return command(args)
 	end
 	return commands.help()
 end
