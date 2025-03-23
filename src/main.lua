@@ -1,5 +1,3 @@
--- gpg --decrypt /tmp/.bruce-vault/credential.gpg | cat
-
 local BRUCE_VAULT_PATH = '/tmp/.bruce-vault/'
 local GPG_IDS_FILE = BRUCE_VAULT_PATH .. '.gpg-history'
 
@@ -118,8 +116,14 @@ function add(...)
 	end
 end
 
-function addf(...)
-	print('addf')
+function show(...)
+	local credential = ...
+	local credential = credential[1]
+	os.execute(string.format('gpg --decrypt %s%s.gpg | cat', BRUCE_VAULT_PATH, credential))
+end
+
+function ls()
+	os.execute('tree -a -C '..BRUCE_VAULT_PATH)
 end
 
 function help(...)
@@ -131,6 +135,10 @@ function help(...)
 	Add a credential into Bruce Vault.
 	bruce help ->
 	Show this help message.
+	bruce show <credential> ->
+	Show the data of a specific credential
+	bruce ls ->
+	Show all credentials into bruce vault
 	]]	
 	)
 end
@@ -139,7 +147,8 @@ commands = {
 	['init'] = init,
 	['help'] = help,
 	['add'] = add,
-	['addf'] = addf
+	['show'] = show,
+	['ls'] = ls,
 }
 
 function run(...)
