@@ -118,7 +118,10 @@ end
 
 function show(...)
 	local credential = ...
-	local credential = credential[1]
+	credential = credential[1]
+	if credential == nil then
+		return print('usage: bruce show <credential>')
+	end
 	os.execute(string.format('gpg --decrypt %s%s.gpg 2>/dev/null | cat', BRUCE_VAULT_PATH, credential))
 end
 
