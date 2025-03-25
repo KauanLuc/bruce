@@ -160,6 +160,21 @@ function find(...)
 	print('No such credential')
 end
 
+function remove(...)
+	local credential = ...
+	credential = credential[1]
+	if credential == nil then
+		return print('usage: bruce remove <credential>')
+	end
+	local dirs = getDirs(BRUCE_VAULT_PATH)
+	for _, dir in ipairs(dirs) do
+		if verifyFile(dir..credential) then
+			return os.execute('rm '..dir..credential..'.gpg')
+		end
+	end
+	print('No such credential')
+end
+
 function help(...)
 	print(
 	[[
@@ -174,7 +189,9 @@ function help(...)
 	bruce ls ->
 	Show all credentials into bruce vault
 	bruce find <credential> ->
-	Returns the location of the credential inside the bruce vault (always shows the first occurrence) 
+	Returns the location of the credential inside the bruce vault (always shows the first occurrence)
+	bruce remove <credential> ->
+	Removes the required credential 
 	]]	
 	)
 end
@@ -186,6 +203,7 @@ commands = {
 	['show'] = show,
 	['ls'] = ls,
 	['find'] = find,
+	['remove'] = remove,
 }
 
 function run(...)
