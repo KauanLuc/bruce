@@ -1,3 +1,4 @@
+local lfs = require 'lfs'
 local BRUCE_VAULT_PATH = '/tmp/.bruce-vault/'
 local GPG_IDS_FILE = BRUCE_VAULT_PATH .. '.gpg-history'
 
@@ -22,7 +23,8 @@ function encrypt(data, credential_path, gpg_id)
 end
 
 function verifyFile(file)
-	return os.execute('ls ' .. file .. '.gpg > /dev/null')
+	local attr = lfs.attributes(file .. '.gpg')
+	return attr and attr.mode == "file"
 end
 
 function showCredentialStatus(credential_path)
@@ -129,6 +131,35 @@ function ls()
 	os.execute('tree -a -C '..BRUCE_VAULT_PATH)
 end
 
+function getDirs(path)
+	local dirs = {}
+	table.insert(dirs, BRUCE_VAULT_PATH)
+	for file in lfs.dir(path) do
+		if file ~= '.' and file ~= '..' then
+			local full_path = path .. file
+			if lfs.attributes(full_path, 'mode') == 'directory' then
+				table.insert(dirs, full_path..'/')
+			end
+		end
+	end
+	return dirs
+end
+
+function find(...)
+	local credential = ...
+	credential = credential[1]
+	if credential == nil then
+		return print('usage: bruce find <credential>')
+	end
+	local dirs = getDirs(BRUCE_VAULT_PATH)
+	for _, dir in ipairs(dirs) do
+		if verifyFile(dir..credential) then
+			 return os.execute('ls '..dir..credential..'.gpg')
+		end
+	end
+	print('No such credential')
+end
+
 function help(...)
 	print(
 	[[
@@ -142,6 +173,8 @@ function help(...)
 	Show the data of a specific credential
 	bruce ls ->
 	Show all credentials into bruce vault
+	bruce find <credential> ->
+	Returns the location of the credential inside the bruce vault (always shows the first occurrence) 
 	]]	
 	)
 end
@@ -152,6 +185,7 @@ commands = {
 	['add'] = add,
 	['show'] = show,
 	['ls'] = ls,
+	['find'] = find,
 }
 
 function run(...)
