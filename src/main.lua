@@ -179,19 +179,19 @@ function help(...)
 	print(
 	[[
 	bruce init -> 
-	Initalize the Bruce Vault.
+		Initalize the Bruce Vault
 	bruce add [--print, -p || --open-editor, -op] <credential || folder/credential> <gpg_id> -> 
-	Add a credential into Bruce Vault.
+		Add a credential into Bruce Vault
 	bruce help ->
-	Show this help message.
+		Show this help message
 	bruce show <credential> ->
-	Show the data of a specific credential
+		Show the data of a specific credential
 	bruce ls ->
-	Show all credentials into bruce vault
+		Show all credentials into bruce vault
 	bruce find <credential> ->
-	Returns the location of the credential inside the bruce vault (always shows the first occurrence)
+		Returns the location of the credential inside the bruce vault (always shows the first occurrence)
 	bruce remove <credential> ->
-	Removes the required credential 
+		Removes the required credential 
 	]]	
 	)
 end
