@@ -202,7 +202,9 @@ function help(...)
 	bruce find <credential> ->
 		Returns the location of the credential inside the bruce vault (always shows the first occurrence)
 	bruce remove <credential> ->
-		Removes the required credential 
+		Removes the required credential
+	bruce generate <password_size> ->
+		Generates a random password with the specified size
 	]]	
 	)
 end
