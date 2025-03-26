@@ -19,7 +19,7 @@ If you don’t have a GPG key pair, check out [Generating a new GPG key](https:/
 The project is still under development. Upcoming updates will include:  
 
 - [X] Commands to add, show, remove, and find credentials  
-- [ ] A strong password generator for credentials
+- [X] A strong password generator for credentials
 
 ### **Commands**
 Below is the list of available commands and their usage:
@@ -87,6 +87,17 @@ Example:
 ```
 bruce remove github.com
 ```
+
+### bruce generate <password_size>
+
+Generates a strong random password with the specified size.
+
+Example:
+```
+bruce generate 16
+```
+
+This command will generate a 16-character random password using a secure method.
 
 ### bruce help
 
