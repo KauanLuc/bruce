@@ -175,6 +175,17 @@ function remove(...)
 	print('No such credential')
 end
 
+function generate(...)
+	local password_size = ...
+	password_size = password_size[1]
+	if password_size == nil then
+		return print('usage: bruce generate <password_size>')
+	end
+	local random = require 'string.random'
+	local generated_password = random(tonumber(password_size), 'printable')
+	print(generated_password)
+end
+
 function help(...)
 	print(
 	[[
@@ -204,6 +215,7 @@ commands = {
 	['ls'] = ls,
 	['find'] = find,
 	['remove'] = remove,
+	['generate'] = generate,
 }
 
 function run(...)
