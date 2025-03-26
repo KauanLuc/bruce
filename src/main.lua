@@ -213,7 +213,7 @@ function run(...)
 		table.remove(args, 1)
 		return command(args)
 	end
-	return commands.help()
+	return commands.ls()
 end
 
 run(arg)
