@@ -1,6 +1,5 @@
 local lfs = require 'lfs'
 local BRUCE_VAULT_PATH = '/tmp/.bruce-vault/'
-local GPG_IDS_FILE = BRUCE_VAULT_PATH .. '.gpg-history'
 
 function init()
 	if os.execute('ls ' .. BRUCE_VAULT_PATH .. ' > /dev/null') == nil then
